@@ -1,0 +1,11 @@
+{
+  "scripts": {
+    "dev": "node --watch server.js",
+    "test": "node --test --verbose"
+  },
+  "type": "module",
+  "dependencies": {
+    "fastify": "^5.8.2",
+    "pino-pretty": "^13.1.3"
+  }
+}
