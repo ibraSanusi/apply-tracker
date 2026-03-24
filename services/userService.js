@@ -4,6 +4,6 @@ export async function getAllUsersService() {
     return await findUsers()
 }
 
-export async function registerUserService(userData) {
-    return await registerUser(userData)
+export async function registerUserService(userData, db) {
+    return await registerUser(userData, db)
 }

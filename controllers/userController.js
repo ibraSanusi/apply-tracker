@@ -7,7 +7,7 @@ export async function wellcomeCtrl(request, reply) {
 
 export async function registerCtrl(request, reply) {
     try {
-        const user = await registerUserService(request.body)
+        const user = await registerUserService(request.body, request.server.db)
         reply.code(201).send({ data: user })
     } catch (error) {
         reply.code(500).send({ message: 'Error registering user', error: error.message })
