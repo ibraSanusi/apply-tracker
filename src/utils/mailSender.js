@@ -14,14 +14,17 @@ export const transporter = createTransport({
 
 export function sendVerificationTokenMail({ email, token }) {
     if (process.env.NODE_ENV === 'test') return 'test'
-    transporter.sendMail({
+
+    return transporter.sendMail({
         from: process.env.SMTP_USER,
         to: email,
-        text: `
+        subject: 'Verifica tu email',
+        html: `
             <h1>Email de verificación</h1>
-            <p>Clicke en el enlace para verificar su mail</p>
-
-            <a href="${process.env.FRONT_URL}/verify-email?verificationMail=${token}"></a>
+            <p>Clickea en el enlace para verificar tu mail</p>
+            <a href="${process.env.FRONT_URL}/verify-email?verificationMail=${token}">
+                Verificar email
+            </a>
         `
     })
 }
