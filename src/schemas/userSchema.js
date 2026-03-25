@@ -5,7 +5,7 @@ export const registerSchema = {
         properties: {
             name: { type: 'string' },
             email: { type: 'string', format: 'email' },
-            password: { type: 'string' }
+            password: { type: 'string' },
         }
     },
     response: {
@@ -18,7 +18,8 @@ export const registerSchema = {
                         id: { type: 'number' },
                         name: { type: 'string' },
                         email: { type: 'string', format: 'email' },
-                        created_at: { type: 'string', format: 'date-time' }
+                        created_at: { type: 'string', format: 'date-time' },
+                        verifyToken: { type: 'string' },
                     }
                 }
             }
@@ -50,6 +51,44 @@ export const loginSchema = {
                     }
                 },
                 token: { type: 'string' }
+            }
+        }
+    }
+}
+
+export const verifyEmailSchema = {
+    body: {
+        type: 'object',
+        required: ['token'],
+        properties: {
+            token: { type: 'string' },
+            userId: { type: 'number' }
+        }
+    },
+    response: {
+        200: {
+            type: 'object',
+            properties: {
+                message: { type: 'string' }
+            }
+        }
+    }
+}
+
+export const sendVerificationEmailSchema = {
+    body: {
+        type: 'object',
+        required: ['email', 'id'],
+        properties: {
+            id: { type: 'number' },
+            email: { type: 'string', format: 'email' },
+        }
+    },
+    response: {
+        200: {
+            type: 'object',
+            properties: {
+                message: { type: 'string' }
             }
         }
     }

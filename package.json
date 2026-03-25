@@ -1,7 +1,7 @@
 {
   "scripts": {
     "dev": "node --watch src/server.js",
-    "test": "node --test --verbose",
+    "test": "node --test",
     "postinstall": "npx prisma generate",
     "prisma:generate": "npx prisma generate",
     "prisma:migrate": "npx prisma migrate dev",
@@ -15,6 +15,7 @@
     "dotenv": "^17.3.1",
     "fastify": "^5.8.2",
     "jsonwebtoken": "^9.0.3",
+    "nodemailer": "^8.0.4",
     "pg": "^8.20.0",
     "pino-pretty": "^13.1.3"
   },

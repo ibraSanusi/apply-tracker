@@ -1,6 +1,6 @@
-import { getAllUsersService, registerUserService, loginUserService } from "../services/userService.js"
+import { getAllUsersService, registerUserService, loginUserService, sendVerificationTokenService, verifyEmailService } from "../services/userService.js"
 
-export async function wellcomeCtrl(request, reply) {
+export async function welcomeCtrl(request, reply) {
     const user = await getAllUsersService()
     reply.send({ data: user })
 }
@@ -8,10 +8,32 @@ export async function wellcomeCtrl(request, reply) {
 export async function registerCtrl(request, reply) {
     try {
         const user = await registerUserService(request.body, request.server.db)
-        reply.code(201).send({ data: user })
+        const verifyToken = await sendVerificationTokenService(user, request.server.db)
+
+        reply.code(201).send({ data: { ...user, verifyToken } })
     } catch (error) {
         reply.code(500).send({ message: 'Error registering user' })
     }
+}
+
+export async function verifyEmailCtrl(request, reply) {
+    try {
+        await verifyEmailService(request.body, request.server.db)
+        reply.code(200).send({ message: 'Email verified correctly' })
+    } catch (error) {
+        console.error('verifyEmail error:', error)
+        reply.code(500).send({ message: 'Error verifying email' })
+    }
+}
+
+export async function sendVerificationEmailCtrl(request, reply) {
+    try {
+        await sendVerificationTokenService(request.body, request.server.db)
+        reply.code(200).send({ message: 'Se envío el enlace de verificación. Compruebe su mail' })
+    } catch (error) {
+        reply.code(500).send({ message: 'Error sending mail user' })
+    }
+
 }
 
 export async function loginCtrl(request, reply) {

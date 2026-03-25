@@ -4,11 +4,14 @@ import buildApp from '../src/app.js'
 
 describe('Users', () => {
     let app
+    let verifyToken
+    let userId
     let email = 'ibra@test.es'
     let password = '12345678'
 
     before(async () => {
         app = await buildApp()
+        process.env.NODE_ENV = 'test'
     })
 
     after(async () => {
@@ -32,6 +35,10 @@ describe('Users', () => {
 
         const { data } = JSON.parse(response.body)
         assert.strictEqual(data.email, payload.email)
+
+        // para los test de mas tarde
+        verifyToken = data.verifyToken
+        userId = data.id
     })
 
     it('POST /users/login should login a user', async () => {
@@ -54,5 +61,20 @@ describe('Users', () => {
         const foundUser = await app.db.query('SELECT * FROM "User" WHERE email = $1', [email])
         assert.strictEqual(foundUser.rows[0].token, token)
         assert.ok(foundUser.rows[0].tokenExpiry > new Date())
+    })
+
+    it('POST /users/verify-email verify the email', async () => {
+        const payload = {
+            userId,
+            token: verifyToken,
+        }
+
+        const response = await app.inject({
+            method: 'POST',
+            url: '/users/verify-email',
+            payload,
+        })
+
+        assert.strictEqual(response.statusCode, 200)
     })
 })

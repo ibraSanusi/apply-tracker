@@ -21,6 +21,8 @@ model User {
   token               String?
   tokenExpiry         DateTime?
   isVerified          Boolean          @default(false)
+  verifyToken         String?
+  verifyTokenExpiry   DateTime?
   recoveryToken       String?
   recoveryTokenExpiry DateTime?
   createdAt           DateTime         @default(now())
