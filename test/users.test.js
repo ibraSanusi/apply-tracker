@@ -1,13 +1,16 @@
 import { after, before, describe, it } from 'node:test'
 import assert from 'node:assert'
 import buildApp from '../src/app.js'
+import { findUserByEmail } from '../src/repositories/userRepository.js'
 
 describe('Users', () => {
     let app
     let verifyToken
+    let recoveryToken
     let userId
     let email = 'ibra@test.es'
     let password = '12345678'
+    let newPassword = 'newPassword'
 
     before(async () => {
         app = await buildApp()
@@ -58,9 +61,9 @@ describe('Users', () => {
         assert.strictEqual(data.email, email)
         assert.strictEqual(response.statusCode, 200)
 
-        const foundUser = await app.db.query('SELECT * FROM "User" WHERE email = $1', [email])
-        assert.strictEqual(foundUser.rows[0].token, token)
-        assert.ok(foundUser.rows[0].tokenExpiry > new Date())
+        const foundUser = await findUserByEmail(email, app.db)
+        assert.strictEqual(foundUser.token, token)
+        assert.ok(foundUser.tokenExpiry > new Date())
     })
 
     it('POST /users/verify-email verify the email', async () => {
@@ -72,6 +75,39 @@ describe('Users', () => {
         const response = await app.inject({
             method: 'POST',
             url: '/users/verify-email',
+            payload,
+        })
+
+        assert.strictEqual(response.statusCode, 200)
+    })
+
+    it('POST /users/send-recovery-mail send recovery password mail', async () => { // TODO: Cambiar a describe dentro de describe
+        const payload = {
+            email,
+        }
+
+        const response = await app.inject({
+            method: 'POST',
+            url: '/users/send-recovery-mail',
+            payload,
+        })
+
+        const foundUser = await findUserByEmail(email, app.db)
+        recoveryToken = foundUser.recoveryToken
+
+        assert.strictEqual(response.statusCode, 200)
+    })
+
+    it('POST /users/recover-password recover the password', async () => { // TODO: Cambiar a describe dentro de describe
+        const payload = {
+            newPassword,
+            token: recoveryToken,
+            email,
+        }
+
+        const response = await app.inject({
+            method: 'POST',
+            url: '/users/recover-password',
             payload,
         })
 

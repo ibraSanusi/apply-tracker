@@ -60,6 +60,20 @@ export async function updateVerifyToken(user, db) {
     return result.rows[0]
 }
 
+export async function updateRecoveryToken(data, db) {
+    const { email, recoveryToken } = data
+    const query = `
+        UPDATE "User"
+        SET "recoveryToken" = $1, "recoveryTokenExpiry" = $2
+        WHERE "email" = $3
+        RETURNING "recoveryToken"
+    `
+
+    const recoveryTokenExpiry = new Date(new Date().getTime() + 60 * 60 * 1 * 1000) // 1 hour
+    const result = await db.query(query, [recoveryToken, recoveryTokenExpiry, email])
+    return result.rows[0]
+}
+
 export async function setUserVerified(userId, db) {
     const query = `
         UPDATE "User"
@@ -68,6 +82,30 @@ export async function setUserVerified(userId, db) {
         RETURNING "isVerified"
     `
 
-    const result = await db.query(query, [1, userId])
+    const result = await db.query(query, [true, userId])
     return result.rows[0]
+}
+
+export async function updatePassword({ userId, newPassword }, db) {
+    const passwordHash = await bcrypt.hash(newPassword, 10)
+    const query = `
+        UPDATE "User"
+        SET "passwordHash" = $1
+        WHERE "id" = $2
+        RETURNING "id"
+    `
+
+    const result = await db.query(query, [passwordHash, userId])
+    return result.rows[0]
+}
+
+export async function resetUserRecoveryToken(userId, db) {
+    const query = `
+        UPDATE "User"
+        SET "recoveryToken" = $1, "recoveryTokenExpiry" = $2
+        WHERE "id" = $3
+    `
+
+    const result = await db.query(query, [null, null, userId])
+    return result.updatedRows
 }

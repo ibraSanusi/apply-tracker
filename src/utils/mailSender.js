@@ -28,3 +28,14 @@ export function sendVerificationTokenMail({ email, token }) {
         `
     })
 }
+
+export function sendEmail({ to, html, subject }) {
+    if (process.env.NODE_ENV === 'test') return 'test'
+
+    return transporter.sendMail({
+        from: process.env.SMTP_USER,
+        to,
+        subject,
+        html,
+    })
+}

@@ -1,8 +1,9 @@
 import jwt from 'jsonwebtoken'
 import dotenv from 'dotenv'
 import bcrypt from 'bcrypt'
-import { findUsers, insertUser, findUserByEmail, updateUserToken, updateVerifyToken, findUserById, setUserVerified } from "../repositories/userRepository.js"
-import { sendVerificationTokenMail } from '../utils/mailSender.js'
+import { findUsers, insertUser, findUserByEmail, updateUserToken, updateVerifyToken, findUserById, setUserVerified, updateRecoveryToken, updatePassword, resetUserRecoveryToken } from "../repositories/userRepository.js"
+import { sendEmail, sendVerificationTokenMail } from '../utils/mailSender.js'
+import { recoveryHtml } from '../utils/htmlTemplates.js'
 
 dotenv.config()
 
@@ -49,4 +50,21 @@ export async function verifyEmailService({ token, userId }, db) {
     if (Date(user.verifyTokenExpiry) < Date.now() || user.verifyToken !== token) throw new Error("Token undefined or expired");
 
     await setUserVerified(userId, db)
+}
+
+export async function sendRecoveryMailService(user, db) {
+    const token = crypto.randomUUID()
+    await updateRecoveryToken({ email: user.email, token }, db)
+    sendEmail({ to: user.email, html: recoveryHtml(token), subject: 'Recupera tu contraseña' })
+}
+
+export async function recoverPasswordService(data, db) {
+    const { recoveryToken, email, newPassword } = data
+    const user = await findUserByEmail(email, db)
+
+    if (!user) throw new Error('Error cambiando contraseña')
+
+    const isValid = user.recoveryToken === recoveryToken && new Date() < user.recoveryTokenExpiry
+    if (isValid) await updatePassword({ userId: user.id, newPassword }, db)
+    await resetUserRecoveryToken(user.id, db)
 }

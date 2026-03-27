@@ -1,4 +1,4 @@
-import { getAllUsersService, registerUserService, loginUserService, sendVerificationTokenService, verifyEmailService } from "../services/userService.js"
+import { getAllUsersService, registerUserService, loginUserService, sendVerificationTokenService, verifyEmailService, sendRecoveryMailService, recoverPasswordService } from "../services/userService.js"
 
 export async function welcomeCtrl(request, reply) {
     const user = await getAllUsersService()
@@ -45,5 +45,24 @@ export async function loginCtrl(request, reply) {
         reply.send({ data: payload, token: jwtToken })
     } catch (error) {
         reply.code(500).send({ message: 'Error logging in' })
+    }
+}
+
+export async function sendRecoveryMailCtrl(request, reply) {
+    try {
+        await sendRecoveryMailService(request.body, request.server.db)
+        reply.code(200).send({ message: 'Se envio el enlace de recuperación. Compruebe su mail' })
+    } catch (error) {
+        console.log('Error enviando mail de recuperación: ', error)
+        reply.code(500).send({ message: 'Error enviando mail de recuperación' })
+    }
+}
+
+export async function recoverPasswordCtrl(request, reply) {
+    try {
+        await recoverPasswordService(request.body, request.server.db)
+        reply.code(200).send({ message: 'Contraseña actualizada correctamente' })
+    } catch (error) {
+        reply.code(500).send({ message: 'Error actualizando contraseña' })
     }
 }
