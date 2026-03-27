@@ -65,6 +65,8 @@ export async function recoverPasswordService(data, db) {
     if (!user) throw new Error('Error cambiando contraseña')
 
     const isValid = user.recoveryToken === recoveryToken && new Date() < user.recoveryTokenExpiry
-    if (isValid) await updatePassword({ userId: user.id, newPassword }, db)
+    if (!isValid) throw new Error('Error cambiando contraseña')
+
+    await updatePassword({ userId: user.id, newPassword }, db)
     await resetUserRecoveryToken(user.id, db)
 }
