@@ -38,10 +38,11 @@ export async function sendVerificationEmailCtrl(request, reply) {
 
 export async function loginCtrl(request, reply) {
     try {
-        const { payload, jwtToken } = await loginUserService(request.body, request.server.db)
-        if (!payload) {
-            reply.code(401).send({ message: 'Invalid credentials' })
+        const result = await loginUserService(request.body, request.server.db)
+        if (!result) {
+            return reply.code(401).send({ message: 'Invalid credentials' })
         }
+        const { payload, jwtToken } = result
         reply.send({ data: payload, token: jwtToken })
     } catch (error) {
         reply.code(500).send({ message: 'Error logging in' })

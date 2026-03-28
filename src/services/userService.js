@@ -52,14 +52,17 @@ export async function verifyEmailService({ token, userId }, db) {
     await setUserVerified(userId, db)
 }
 
-export async function sendRecoveryMailService(user, db) {
+export async function sendRecoveryMailService(data, db) {
+    const user = await findUserByEmail(data.email, db)
+    if (!user) throw new Error('User not found')
+
     const token = crypto.randomUUID()
-    await updateRecoveryToken({ email: user.email, token }, db)
+    await updateRecoveryToken({ email: user.email, recoveryToken: token }, db)
     sendEmail({ to: user.email, html: recoveryHtml(token), subject: 'Recupera tu contraseña' })
 }
 
 export async function recoverPasswordService(data, db) {
-    const { recoveryToken, email, newPassword } = data
+    const { token: recoveryToken, email, newPassword } = data
     const user = await findUserByEmail(email, db)
 
     if (!user) throw new Error('Error cambiando contraseña')
