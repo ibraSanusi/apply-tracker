@@ -73,3 +73,24 @@ export async function recoverPasswordService(data, db) {
     await updatePassword({ userId: user.id, newPassword }, db)
     await resetUserRecoveryToken(user.id, db)
 }
+
+export async function validateUser(authorization, db) {
+    if (!authorization?.startsWith('Bearer ')) {
+        throw new Error('Invalid credentials')
+    }
+
+    const token = authorization.split(' ')[1]
+
+    let tokenDecoded
+    try {
+        tokenDecoded = jwt.verify(token, process.env.JWT_SECRET)
+    } catch (error) {
+        throw new Error('Invalid session')
+    }
+
+    const user = await findUserByEmail(tokenDecoded.email, db)
+
+    if (!user) throw new Error('Invalid session')
+
+    return user
+}
