@@ -1,7 +1,9 @@
 import { after, before, describe, it } from 'node:test'
 import assert from 'node:assert'
 import buildApp from '../src/app.js'
+import jwt from 'jsonwebtoken'
 import { findUserByEmail } from '../src/repositories/userRepository.js'
+import { loginUser, registerUser } from './utils.js'
 
 describe('Users', () => {
     let app
@@ -23,18 +25,7 @@ describe('Users', () => {
     })
 
     it('POST /users/register should register a new user', async () => {
-        const payload = {
-            name: 'Ibrahim',
-            lastName: 'Sanusi',
-            email,
-            password,
-        }
-
-        const response = await app.inject({
-            method: 'POST',
-            url: '/users/register',
-            payload
-        })
+        const response = await registerUser({ email, password }, app)
 
         assert.strictEqual(response.statusCode, 201)
         const { data } = JSON.parse(response.body)
@@ -105,16 +96,7 @@ describe('Users', () => {
 
     describe('POST /users/login', () => {
         it('should login a user', async () => {
-            const payload = {
-                email,
-                password,
-            }
-
-            const response = await app.inject({
-                method: 'POST',
-                url: '/users/login',
-                payload,
-            })
+            const response = await loginUser({ email, password }, app)
 
             assert.strictEqual(response.statusCode, 200)
             const { data, token } = JSON.parse(response.body)
