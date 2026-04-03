@@ -36,7 +36,12 @@ model JobApplication {
   position    String
   status      String   @default("applied")
   appliedDate DateTime @default(now())
+  coverSlug   String?
+  cvSlug      String?
+  salary      Int?
+  email       String?
   notes       String?
+  medium      String?
   user        User     @relation(fields: [userId], references: [id])
   userId      Int
 }
