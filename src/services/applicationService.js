@@ -112,9 +112,9 @@ export async function askChatService(chatInput, cvTemplate) {
                 content: JSON.stringify({
                     company: "Crescenta",
                     position: "Junior Full-Stack Developer",
-                    email: "talento@crescenta.com",
-                    salary: 24000,
-                    medium: null,
+                    email: "email (si existe)",
+                    salary: "number (salario máximo si hay rango)",
+                    medium: "string (si indica el medio por el que aplica, sino null)",
                     cv: {
                         name: "string",
                         title: "string",
