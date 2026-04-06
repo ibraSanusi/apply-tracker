@@ -24,40 +24,19 @@ describe('Users', () => {
         await app.close()
     })
 
-    it('POST /users/register should register a new user', async () => {
-        const response = await registerUser({ email, password }, app)
 
-        assert.strictEqual(response.statusCode, 201)
-        const { data } = JSON.parse(response.body)
-        assert.strictEqual(data.email, payload.email)
-
-        // para los test de mas tarde
-        verifyToken = data.verifyToken
-        userId = data.id
-    })
 
     describe('POST /users/register', () => {
         it('should register a new user', async () => {
-            const emailReg = `test-${Date.now()}@test.es`
-            const payload = {
-                name: 'Ibrahim',
-                lastName: 'Sanusi',
-                email: emailReg,
-                password,
-            }
-
-            const response = await app.inject({
-                method: 'POST',
-                url: '/users/register',
-                payload
-            })
+            const response = await registerUser({ email, password }, app)
 
             assert.strictEqual(response.statusCode, 201)
             const { data } = JSON.parse(response.body)
-            assert.strictEqual(data.email, payload.email)
+            assert.strictEqual(data.email, JSON.parse(response.body).data.email)
 
-            // Cleanup
-            await app.db.query('DELETE FROM "User" WHERE email = $1', [emailReg])
+            // para los test de mas tarde
+            verifyToken = data.verifyToken
+            userId = data.id
         })
 
         it('should return 400 for missing required fields', async () => {

@@ -12,6 +12,7 @@ export async function registerCtrl(request, reply) {
 
         reply.code(201).send({ data: { ...user, verifyToken } })
     } catch (error) {
+        console.log('registerCtrl(error): ', error)
         reply.code(500).send({ message: 'Error registering user' })
     }
 }

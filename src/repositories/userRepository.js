@@ -6,6 +6,7 @@ export async function findUsers() {
 
 export async function insertUser(userData, db) {
     const { name, lastName, email, password } = userData
+
     const passwordHash = await bcrypt.hash(password, 10)
     const query = `
         INSERT INTO "User" ("name", "lastName", "email", "passwordHash", "createdAt", "updatedAt", "token", "tokenExpiry", "verifyToken", "verifyTokenExpiry", "isVerified", "recoveryToken", "recoveryTokenExpiry")

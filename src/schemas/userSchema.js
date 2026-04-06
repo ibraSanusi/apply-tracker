@@ -1,9 +1,10 @@
 export const registerSchema = {
     body: {
         type: 'object',
-        required: ['name', 'email', 'password'],
+        required: ['name', 'lastName', 'email', 'password'],
         properties: {
             name: { type: 'string' },
+            lastName: { type: 'string' },
             email: { type: 'string', format: 'email' },
             password: { type: 'string' },
         }
