@@ -10,7 +10,7 @@ export const saveApplicationSchema = {
         type: 'object',
         required: ['company', 'position', "cv", "cover"],
         properties: {
-            companyName: { type: 'string' },
+            company: { type: 'string' },
             position: { type: 'string' },
             email: { type: 'string', format: 'email' },
             salary: { type: 'number' },
@@ -45,9 +45,9 @@ export const saveApplicationSchema = {
 export const askChatSchema = {
     body: {
         type: 'object',
-        required: ['input', 'cvTemplate'],
+        required: ['jobDescription', 'cvTemplate'],
         properties: {
-            input: { type: 'string' },  // la oferta de trabajo
+            jobDescription: { type: 'string' },  // la oferta de trabajo
             cvTemplate: { type: 'string' },  // el CV base
         }
     },
