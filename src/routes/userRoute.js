@@ -1,7 +1,7 @@
 import { welcomeCtrl, registerCtrl, loginCtrl, verifyEmailCtrl, sendVerificationEmailCtrl, sendRecoveryMailCtrl, recoverPasswordCtrl } from "../controllers/userController.js"
 import { registerSchema, loginSchema, verifyEmailSchema, sendVerificationEmailSchema, sendRecoveryMailSchema, recoverPasswordSchema } from "../schemas/userSchema.js"
 
-async function userRoutes(fastify) {
+async function userRoute(fastify) {
     fastify.get('/', welcomeCtrl)
     fastify.post('/register', { schema: registerSchema }, registerCtrl)
     fastify.post('/send-verification-mail', { schema: sendVerificationEmailSchema }, sendVerificationEmailCtrl)
@@ -11,4 +11,4 @@ async function userRoutes(fastify) {
     fastify.post('/login', { schema: loginSchema }, loginCtrl)
 }
 
-export default userRoutes
+export default userRoute

@@ -48,7 +48,7 @@ describe('Application', () => {
         const chatResponse = await app.inject({
             method: 'POST',
             headers: authorizationHeader,
-            url: '/application/chat',
+            url: '/applications/chat',
             payload: { cvTemplate, jobDescription },
         })
 
@@ -67,7 +67,7 @@ describe('Application', () => {
         const saveResponse = await app.inject({
             method: 'POST',
             headers: authorizationHeader,
-            url: '/application/save',
+            url: '/applications/save',
             payload
         })
 

@@ -1,13 +1,13 @@
 import Fastify from 'fastify'
-import userRoutes from './routes/userRoutes.js'
+import userRoute from './routes/userRoute.js'
 import db from './db.js'
-import applicationRoutes from './routes/applicationRoutes.js'
+import applicationRoute from './routes/applicationRoute.js'
 
 export async function buildApp(opts = {}) {
     const app = Fastify(opts)
     app.decorate('db', db)
-    await app.register(userRoutes, { prefix: '/users' })
-    await app.register(applicationRoutes, { prefix: '/application' })
+    await app.register(userRoute, { prefix: '/users' })
+    await app.register(applicationRoute, { prefix: '/applications' })
     return app
 }
 

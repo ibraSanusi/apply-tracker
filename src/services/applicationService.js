@@ -36,8 +36,11 @@ export async function saveApplicationService(body, db) {
 }
 
 async function uploadTextFiles(files) {
-    if (process.env.NODE_ENV === 'test') return files.map((file, idx) => `${file.key}${idx + 1}`)
-    return await files.map(async file => {
+    if (process.env.NODE_ENV === 'test') {
+        return files.map((file, idx) => ({ key: file.key, location: `${file.key}${idx + 1}` }))
+    }
+
+    return await Promise.all(files.map(async file => {
         const { key, body } = file
 
         return await s3Client.send(
@@ -49,7 +52,7 @@ async function uploadTextFiles(files) {
                 ContentDisposition: 'inline',
             }),
         )
-    })
+    }))
 }
 
 export async function uploadApplicationMediaS3({ cv, cover }) {
@@ -81,25 +84,26 @@ export async function getApplicationObjectSignedUrl(key) {
 }
 
 export async function askChatService({ jobDescription, cvTemplate }) {
-    const openaiStream = await openaiClient.responses.create({
+    const openaiStream = await openaiClient.chat.completions.create({
         model: 'gpt-4o',
-        input: [
+        messages: [
             { role: 'system', content: applicationChatInstruction },
-            { role: 'assistant', content: applicationChatResponseFormat },
-            { role: 'user', content: `Oferta de trabajo:\n${jobDescription}\n\nMi CV base:\n${cvTemplate}` },
+            { role: 'user', content: `Job Description:\n${jobDescription}\n\nMy Base CV:\n${cvTemplate}\n\nResponse format instructions:\n${applicationChatResponseFormat}` },
         ],
         stream: true,
     })
 
-    const readable = new Readable({ read() { } })  // read vacío — tú controlas cuándo se pushea
+    const readable = new Readable({ read() { } })
 
-        ; (async () => {
-            for await (const event of openaiStream) {
-                if (!event.delta) continue
-                readable.push(event.delta)
+    ;(async () => {
+        for await (const chunk of openaiStream) {
+            const content = chunk.choices[0]?.delta?.content || ''
+            if (content) {
+                readable.push(content)
             }
-            readable.push(null)
-        })()
+        }
+        readable.push(null)
+    })()
 
     return readable
 }
