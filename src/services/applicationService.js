@@ -109,12 +109,7 @@ export async function askChatService({ jobDescription, cvTemplate }) {
 }
 
 export async function getApplicationsService(userId, db) {
-    const applications = await getApplications(userId, db)
-    return await Promise.all(applications.map(async application => {
-        const cvUrl = await getApplicationObjectSignedUrl(application.cvSlug)
-        const coverUrl = await getApplicationObjectSignedUrl(application.coverSlug)
-        return { ...application, cvUrl, coverUrl }
-    }))
+    return await getApplications(userId, db)
 }
 
 export async function getApplicationByIdService(id, db) {

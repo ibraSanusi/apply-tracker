@@ -210,8 +210,6 @@ export const getApplicationsSchema = {
                             email: { type: 'string', format: 'email' },
                             salary: { type: 'number' },
                             medium: { type: 'string' },
-                            cvUrl: { type: 'string', format: 'uri' },
-                            coverUrl: { type: 'string', format: 'uri' },
                         }
                     }
                 }
