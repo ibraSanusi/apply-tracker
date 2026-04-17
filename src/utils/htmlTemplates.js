@@ -1,8 +1,8 @@
-const recoveryHtml = (token) => {
+const recoveryHtml = (token, email) => {
     return `
             <h1>Email de recuperación</h1>
             <p>Clickea en el enlace para recuperar tu contraseña</p>
-            <a href="${process.env.FRONT_URL}/recovery-password?recoveryToken=${token}">
+            <a href="${process.env.FRONT_URL}/recovery-password?recoveryToken=${token}&email=${email}">
                 Recuperar contraseña
             </a>
         `

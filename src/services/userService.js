@@ -58,7 +58,7 @@ export async function sendRecoveryMailService(data, db) {
 
     const token = crypto.randomUUID()
     await updateRecoveryToken({ email: user.email, recoveryToken: token }, db)
-    sendEmail({ to: user.email, html: recoveryHtml(token), subject: 'Recupera tu contraseña' })
+    sendEmail({ to: user.email, html: recoveryHtml(token, user.email), subject: 'Recupera tu contraseña' })
 }
 
 export async function recoverPasswordService(data, db) {
