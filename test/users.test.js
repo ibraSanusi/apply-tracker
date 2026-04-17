@@ -195,7 +195,7 @@ describe('Users', () => {
         })
     })
 
-    describe('POST /users/recover-password', () => {
+    describe('POST /users/confirm-password', () => {
         it('should recover the password', async () => {
             const payload = {
                 newPassword,
@@ -205,7 +205,7 @@ describe('Users', () => {
 
             const response = await app.inject({
                 method: 'POST',
-                url: '/users/recover-password',
+                url: '/users/confirm-password',
                 payload,
             })
 
@@ -220,7 +220,7 @@ describe('Users', () => {
 
             const response = await app.inject({
                 method: 'POST',
-                url: '/users/recover-password',
+                url: '/users/confirm-password',
                 payload,
             })
 
@@ -236,7 +236,7 @@ describe('Users', () => {
 
             const response = await app.inject({
                 method: 'POST',
-                url: '/users/recover-password',
+                url: '/users/confirm-password',
                 payload,
             })
 

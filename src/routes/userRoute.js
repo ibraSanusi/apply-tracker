@@ -7,7 +7,7 @@ async function userRoute(fastify) {
     fastify.post('/send-verification-mail', { schema: sendVerificationEmailSchema }, sendVerificationEmailCtrl)
     fastify.post('/verify-email', { schema: verifyEmailSchema }, verifyEmailCtrl)
     fastify.post('/send-recovery-mail', { schema: sendRecoveryMailSchema }, sendRecoveryMailCtrl)
-    fastify.post('/recover-password', { schema: recoverPasswordSchema }, recoverPasswordCtrl)
+    fastify.post('/confirm-password', { schema: recoverPasswordSchema }, recoverPasswordCtrl)
     fastify.post('/login', { schema: loginSchema }, loginCtrl)
 }
 
