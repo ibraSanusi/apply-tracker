@@ -5,7 +5,7 @@ import { loginUser, registerUser } from './utils.js'
 import assert from 'node:assert'
 import { deleteUserByEmail } from '../src/repositories/userRepository.js'
 import { deleteApplication, findApplicationById } from '../src/repositories/applicationRepository.js'
-import { cvTemplate, jobDescription } from '../src/utils/constants.js'
+import { cvTemplate, jobDescription, sampleCV } from '../src/utils/constants.js'
 
 describe('Application', () => {
     let app
@@ -34,7 +34,7 @@ describe('Application', () => {
 
     it('should upload cv to S3 service', async () => {
         const payload = {
-            cv: 'Esta es mi experiencia',
+            cv: sampleCV,
             cover: 'Esta es mi motivación'
         }
 
@@ -61,7 +61,7 @@ describe('Application', () => {
         const payload = {
             company: 'Google',
             position: 'Developer',
-            cv: 'mi cv',
+            cv: sampleCV,
             cover: 'mi cover'
         }
 
@@ -133,7 +133,7 @@ describe('Application', () => {
         })
 
         assert.strictEqual(response.statusCode, 200)
-        
+
         // Verificar que ya no existe
         const getResponse = await app.inject({
             method: 'GET',

@@ -15,7 +15,7 @@ export const saveApplicationSchema = {
             email: { type: 'string', format: 'email' },
             salary: { type: 'number' },
             medium: { type: 'string' },
-            cv: { type: 'string' },
+            cv: { type: 'object' },
             cover: { type: 'string' },
         }
     },
@@ -177,7 +177,7 @@ export const askChatSchema = {
                         email: { type: 'string', nullable: true },
                         salary: { type: 'number', nullable: true },
                         medium: { type: 'string', nullable: true },
-                        cv: { type: 'string' },
+                        cv: { type: 'object', additionalProperties: true },
                         cover: { type: 'string' },
                     }
                 }

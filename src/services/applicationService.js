@@ -64,15 +64,15 @@ export async function uploadApplicationMediaS3({ cv, cover }) {
     const cvBuffer = await generateDocxFromJson(cv);
 
     const [cvUpload, coverUpload] = await uploadFilesS3([
-        { 
-            key: cvSlug, 
-            body: cvBuffer, 
-            contentType: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' 
+        {
+            key: cvSlug,
+            body: cvBuffer,
+            contentType: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
         },
-        { 
-            key: coverSlug, 
-            body: Buffer.from(cover), 
-            contentType: 'text/plain' 
+        {
+            key: coverSlug,
+            body: Buffer.from(cover),
+            contentType: 'text/plain'
         }
     ])
 
@@ -159,10 +159,10 @@ export async function updateApplicationService(id, body, db) {
     if (cv) {
         const cvSlug = `applications/cv/${crypto.randomUUID()}.docx`
         const cvBuffer = await generateDocxFromJson(cv);
-        await uploadFilesS3([{ 
-            key: cvSlug, 
-            body: cvBuffer, 
-            contentType: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' 
+        await uploadFilesS3([{
+            key: cvSlug,
+            body: cvBuffer,
+            contentType: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
         }])
         await deleteFileFromS3(existingApplication.cvSlug)
         updateData.cvSlug = cvSlug
@@ -171,10 +171,10 @@ export async function updateApplicationService(id, body, db) {
     // Si se proporciona un nuevo Cover, cargamos el nuevo y borramos el anterior
     if (cover) {
         const coverSlug = `applications/cover/${crypto.randomUUID()}.txt`
-        await uploadFilesS3([{ 
-            key: coverSlug, 
-            body: Buffer.from(cover), 
-            contentType: 'text/plain' 
+        await uploadFilesS3([{
+            key: coverSlug,
+            body: Buffer.from(cover),
+            contentType: 'text/plain'
         }])
         await deleteFileFromS3(existingApplication.coverSlug)
         updateData.coverSlug = coverSlug

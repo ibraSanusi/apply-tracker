@@ -1,4 +1,5 @@
 import bcrypt from 'bcrypt'
+import prisma from '../prismaClient.js'
 
 export async function findUsers(db) {
     const query = `
@@ -13,6 +14,8 @@ export async function insertUser(userData, db) {
     const { name, lastName, email, password } = userData
 
     const passwordHash = await bcrypt.hash(password, 10)
+    
+    /* Manual query paradigm (kept for reference)
     const query = `
         INSERT INTO "User" ("name", "lastName", "email", "passwordHash", "createdAt", "updatedAt", "token", "tokenExpiry", "verifyToken", "verifyTokenExpiry", "isVerified", "recoveryToken", "recoveryTokenExpiry")
         VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13)
@@ -20,6 +23,17 @@ export async function insertUser(userData, db) {
     `
     const result = await db.query(query, [name, lastName, email, passwordHash, new Date(), new Date(), null, null, null, null, true, null, null])
     return result.rows[0]
+    */
+
+    return await prisma.user.create({
+        data: {
+            name,
+            lastName,
+            email,
+            passwordHash,
+            isVerified: true
+        }
+    })
 }
 export async function findUserByEmail(email, db) {
     const user = await db.query(`

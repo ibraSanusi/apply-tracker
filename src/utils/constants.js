@@ -206,3 +206,54 @@ export const jobDescription = `
 
     IMPORTANTE: Si estas interesado en la oferta, no dudes en mandar tu CV a talento@crescenta.com indicando en el asunto Junior full-stack developer, no revisamos solicitudes que no lleguen por este medio.
 `
+
+export const sampleCV = {
+    name: "Ibrahim Ayodeji Sanusi",
+    title: "Desarrollador Full Stack Junior",
+    location: "Fuenlabrada, Madrid",
+    contact: {
+        email: "ibra.sanusi.ayo@gmail.com",
+        github: "github.com/ibraSanusi",
+        linkedin: "linkedin.com/in/ibrahim-ayodeji-sanusi"
+    },
+    profile: "Desarrollador Full Stack con casi 3 años de experiencia práctica acumulada entre formación, proyectos autodidactas y trabajo profesional. Acostumbrado a entregar producto real en entornos ágiles, desde MVPs hasta aplicaciones con IA integrada. Dominio nativo del inglés y español.",
+    experience: [
+        {
+            company: "Fullcircle S.L.",
+            role: "Desarrollador Full Stack Junior",
+            period: "Junio 2025 – Abril 2026 (10 meses) • Madrid, España",
+            bullets: [
+                "Desarrollo de funcionalidades completas en proyectos MVP usando React, TypeScript, Node.js y Express.",
+                "Implementación de tests unitarios y E2E, asegurando calidad en cada entrega.",
+                "Integración técnica del sistema interno con plataforma de facturación electrónica (VeriFACTU).",
+                "Creación e integración de CRUDs RESTful.",
+                "Uso de Docker para entornos de desarrollo y despliegue reproducibles."
+            ]
+        },
+        {
+            company: "Recomiend.App",
+            role: "Desarrollador Full Stack Junior",
+            period: "Ene 2024 – Mar 2025 (1 año y 2 meses) • Madrid, España",
+            bullets: [
+                "Desarrollo completo del frontend de una app de análisis de fotografías con IA.",
+                "Migración del backoffice interno de Redux a Next.js, mejorando rendimiento y mantenibilidad.",
+                "Stack: React.js, Next.js, Tailwind CSS.",
+                "Trabajo en equipo con metodologías ágiles (sprints, daily standups) y Git."
+            ]
+        }
+    ],
+    education: [
+        {
+            title: "CFGS Desarrollo de Aplicaciones Web (DAW)",
+            center: "Centro Formativo",
+            location: "Madrid"
+        }
+    ],
+    skills: {
+        frontend: ["JavaScript", "TypeScript", "React.js", "Next.js", "Tailwind CSS"],
+        backend: ["Node.js", "Express", "REST APIs", "Docker", "Cron Jobs"],
+        testing: ["Jest/Vitest", "Unit Testing", "E2E Testing", "Git"]
+    },
+    languages: ["Español — Nativo", "Inglés — Nativo (origen familiar nigeriano)"],
+    additional: "GitHub activo con proyectos personales: github.com/ibraSanusi. ~3 años de experiencia práctica total."
+};

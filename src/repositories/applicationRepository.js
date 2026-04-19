@@ -1,7 +1,9 @@
 import { insert, update } from "../utils/db.js"
+import prisma from "../prismaClient.js"
 
 export async function insertApplication(application, db) {
-    return await insert({ data: application, model: 'JobApplication' }, db)
+    // return await insert({ data: application, model: 'JobApplication' }, db)
+    return await prisma.jobApplication.create({ data: application })
 }
 
 export async function deleteApplication(id, db) {
