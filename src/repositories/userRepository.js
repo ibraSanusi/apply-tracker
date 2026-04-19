@@ -1,7 +1,12 @@
 import bcrypt from 'bcrypt'
 
-export async function findUsers() {
-    return 'hola desde el repositorio'
+export async function findUsers(db) {
+    const query = `
+        SELECT * 
+        FROM "User"
+    `
+    const result = await db.query(query)
+    return result.rows
 }
 
 export async function insertUser(userData, db) {
