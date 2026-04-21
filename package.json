@@ -2,7 +2,6 @@
   "scripts": {
     "dev": "node --watch src/server.js",
     "test": "node --test",
-    "postinstall": "npx prisma generate",
     "prisma:generate": "npx prisma generate",
     "prisma:migrate": "npx prisma migrate dev",
     "prisma:studio": "npx prisma studio"
