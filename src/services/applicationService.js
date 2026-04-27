@@ -88,6 +88,7 @@ export async function uploadApplicationMediaS3({ cv, cover }) {
 
 
 export async function getApplicationObjectSignedUrl(key) {
+    if (!key) return null
     if (process.env.NODE_ENV === 'test') return key
 
     const command = new GetObjectCommand({
