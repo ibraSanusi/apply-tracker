@@ -8,17 +8,17 @@ RUN corepack enable && corepack prepare pnpm@latest --activate
 WORKDIR /app
 
 # Solo dependencias primero (cache optimizada)
-COPY package.json pnpm-lock.yaml ./
+COPY package.json package-lock.json ./
 COPY prisma ./prisma
 COPY prisma.config.ts ./prisma.config.ts
 
-RUN pnpm install
+RUN npm install
 
 # Copiamos el resto del código
 COPY . .
 
 # Prisma generate en build
-RUN pnpm prisma generate
+RUN npx prisma generate
 
 # (opcional) build si tuvieras TS
 # RUN pnpm build
@@ -30,8 +30,6 @@ RUN pnpm prisma generate
 FROM node:22-slim AS runner
 
 RUN apt-get update && apt-get install -y libreoffice --no-install-recommends && rm -rf /var/lib/apt/lists/*
-
-RUN corepack enable && corepack prepare pnpm@latest --activate
 
 WORKDIR /app
 
@@ -47,4 +45,4 @@ COPY --from=builder /app/src ./src
 
 EXPOSE 3000
 
-CMD ["pnpm", "run", "dev"]
+CMD ["npm", "run", "dev"]

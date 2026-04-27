@@ -13,4 +13,4 @@ services:
       - ./prisma:/app/prisma  # y prisma si lo necesitas en dev
     environment:
       - IS_DOCKER=true
-    command: sh -c "pnpm dlx prisma migrate deploy && pnpm run dev"
+    command: sh -c "npx prisma migrate deploy && npm run dev"

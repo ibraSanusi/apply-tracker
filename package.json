@@ -4,7 +4,12 @@
     "test": "node --test",
     "prisma:generate": "npx prisma generate",
     "prisma:migrate": "npx prisma migrate dev",
-    "prisma:studio": "npx prisma studio"
+    "prisma:studio": "npx prisma studio",
+    "preinstall": "npx only-allow npm"
+  },
+  "engines": {
+    "npm": ">=10.9.4",
+    "pnpm": "please-use-npm"
   },
   "type": "module",
   "dependencies": {
