@@ -23,7 +23,8 @@ export async function buildApp(opts = {}) {
                 // Fall through to not allowed
             }
             cb(new Error("Not allowed"), false)
-        }
+        },
+        methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"], // Asegúrate de incluir DELETE
     })
     await app.register(userRoute, { prefix: '/users' })
     await app.register(applicationRoute, { prefix: '/applications' })
