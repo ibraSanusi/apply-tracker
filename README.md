@@ -31,7 +31,7 @@ Apply Tracker is a powerful backend application designed to help job seekers man
 - AWS S3 Bucket
 - OpenAI API Key
 
-### Installation
+### Installation & Running
 
 1. **Clone the repository:**
    ```bash
@@ -39,12 +39,7 @@ Apply Tracker is a powerful backend application designed to help job seekers man
    cd apply-tracker
    ```
 
-2. **Install dependencies:**
-   ```bash
-   npm install
-   ```
-
-3. **Configure environment variables:**
+2. **Configure environment variables:**
    Create a `.env` file in the root directory and add the following:
    ```env
    DATABASE_URL=your_postgresql_url
@@ -57,15 +52,11 @@ Apply Tracker is a powerful backend application designed to help job seekers man
    OPENAI_API_KEY=your_openai_key
    ```
 
-4. **Initialize the database:**
+3. **Run the application with Docker:**
    ```bash
-   npx prisma migrate dev
+   docker compose up --build
    ```
-
-5. **Run the development server:**
-   ```bash
-   npm run dev
-   ```
+   *Note: The Docker container will automatically install dependencies, apply database migrations, and start the development server with hot-reload enabled.*
 
 ## 🧪 Testing
 
