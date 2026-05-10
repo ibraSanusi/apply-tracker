@@ -37,7 +37,7 @@ export async function updateApplication(id, data) {
 }
 
 
-export async function findApplicationsToFollowUp(date, db) {
+export async function findApplicationsToFollowUpByDate(date, db) {
     const query = `
         SELECT ja.*, u.email as "userEmail", u.name as "userName"
         FROM "JobApplication" ja
@@ -45,6 +45,7 @@ export async function findApplicationsToFollowUp(date, db) {
         WHERE ja."createdAt"::date = $1::date
         AND ja.status = 'applied'
         AND ja.email IS NOT NULL
+        AND ja.email != ''
     `
     const result = await db.query(query, [date])
     return result.rows

@@ -1,4 +1,4 @@
-import { getApplicationsService, saveApplicationService, getApplicationByIdService, updateApplicationService, deleteApplicationService } from "../services/applicationService.js"
+import { getApplicationsService, saveApplicationService, getApplicationByIdService, updateApplicationService, deleteApplicationService, followUpService } from "../services/applicationService.js"
 import { validateUser } from "../services/userService.js"
 import { askChatService } from '../services/applicationService.js'
 
@@ -105,4 +105,26 @@ export async function deleteApplicationCtrl(request, reply) {
         reply.code(500).send({ message: 'Error deleting application' })
     }
 }
+
+export async function followUpCtrl(request, reply) {
+    try {
+        const { id } = request.params
+        const { message } = request.body
+
+        const existing = await getApplicationByIdService(id, request.server.db)
+        if (!existing) {
+            return reply.code(404).send({ message: 'Application not found' })
+        }
+        if (existing.userId && existing.userId !== request.user.id) {
+            return reply.code(403).send({ message: 'No tienes permiso para hacer seguimiento a esta aplicación' })
+        }
+
+        await followUpService({ id, message })
+        reply.code(200).send({ message: 'Application followed up correctly' })
+    } catch (error) {
+        console.error('Error doing follow up on application: ', error)
+        reply.code(500).send({ message: 'Error doing follow up on application' })
+    }
+}
+
 

@@ -11,6 +11,7 @@ import { getSignedUrl } from "@aws-sdk/s3-request-presigner"
 import { applicationChatInstruction, applicationChatResponseFormat } from "../utils/constants.js";
 import { Readable } from 'node:stream'
 import { generateDocxFromJson, convertDocxToPdf } from "../utils/docxGenerator.js";
+import { sendEmail } from "../utils/mailSender.js";
 
 const s3Client = new S3Client({
     region: 'eu-north-1',
@@ -220,4 +221,17 @@ export async function deleteApplicationService(id, db) {
 
 
     return deletedCount
+}
+
+export async function followUpService({ id, message }) {
+    const app = await findApplicationById(id)
+    if (!app) throw new Error('Application not found')
+
+    await sendEmail({
+        to: app.email,
+        subject: `Follow-up – Candidatura de ${app.name}`,
+        html: message
+    });
+
+    await updateApplication(id, { status: 'followed_up' });
 }

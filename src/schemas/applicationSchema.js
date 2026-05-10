@@ -219,3 +219,35 @@ export const getApplicationsSchema = {
         }
     }
 }
+
+export const followUpSchema = {
+    headers: {
+        type: 'object',
+        required: ['authorization'],
+        properties: {
+            authorization: { type: 'string' },
+        }
+    },
+    params: {
+        type: 'object',
+        required: ['id'],
+        properties: {
+            id: { type: 'number' },
+        }
+    },
+    body: {
+        type: 'object',
+        required: ['message'],
+        properties: {
+            message: { type: 'string' },
+        }
+    },
+    response: {
+        200: {
+            type: 'object',
+            properties: {
+                message: { type: 'string' }
+            }
+        }
+    }
+}

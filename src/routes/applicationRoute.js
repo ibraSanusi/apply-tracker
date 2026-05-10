@@ -1,19 +1,21 @@
-import { 
-    saveApplicationCtrl, 
-    askChatCtrl, 
-    validateUserCtrl, 
+import {
+    saveApplicationCtrl,
+    askChatCtrl,
+    validateUserCtrl,
     getApplicationsCtrl,
     getApplicationByIdCtrl,
     updateApplicationCtrl,
-    deleteApplicationCtrl
+    deleteApplicationCtrl,
+    followUpCtrl
 } from "../controllers/applicationController.js"
-import { 
-    saveApplicationSchema, 
-    askChatSchema, 
+import {
+    saveApplicationSchema,
+    askChatSchema,
     getApplicationsSchema,
     getApplicationByIdSchema,
     updateApplicationSchema,
-    deleteApplicationSchema
+    deleteApplicationSchema,
+    followUpSchema
 } from "../schemas/applicationSchema.js"
 
 async function applicationRoute(fastify) {
@@ -22,10 +24,12 @@ async function applicationRoute(fastify) {
     fastify.post('/save', { schema: saveApplicationSchema }, saveApplicationCtrl)
     fastify.post('/chat', { schema: askChatSchema }, askChatCtrl)
     fastify.get('/get-all', { schema: getApplicationsSchema }, getApplicationsCtrl)
-    
+
     fastify.get('/:id', { schema: getApplicationByIdSchema }, getApplicationByIdCtrl)
     fastify.put('/:id', { schema: updateApplicationSchema }, updateApplicationCtrl)
     fastify.delete('/:id', { schema: deleteApplicationSchema }, deleteApplicationCtrl)
+
+    fastify.post('/:id/follow-up', { schema: followUpSchema }, followUpCtrl)
 }
 
 export default applicationRoute

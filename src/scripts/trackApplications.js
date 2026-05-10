@@ -1,28 +1,28 @@
 import { program } from "commander";
-import { findApplicationsToFollowUp } from "../repositories/applicationRepository.js";
+import { findApplicationsToFollowUpByDate } from "../repositories/applicationRepository.js";
 import { sendEmail } from "../utils/mailSender.js";
 import { followUpHtml } from "../utils/htmlTemplates.js";
 import db from "../db.js";
 
 async function trackApplications() {
   program.option("-e, --email <string>");
+  program.option("-d, --days <number>", "Número de días a rastrear", "7");
 
   program.parse();
 
   const options = program.opts();
   const emailFilter = options.email;
+  const daysToTrack = parseInt(options.days);
 
   // Calcular la fecha de hace 7 días (solo YYYY-MM-DD)
   const targetDate = new Date();
-  targetDate.setDate(targetDate.getDate() - 7);
-  console.log({ targetDate })
+  targetDate.setDate(targetDate.getDate() - daysToTrack);
   const formattedDate = targetDate.toISOString().split('T')[0];
-  console.log({ formattedDate })
 
-  console.log(`Buscando aplicaciones enviadas el: ${formattedDate}`);
+  console.log(`Buscando aplicaciones enviadas hace ${daysToTrack} días: ${formattedDate}`);
 
   try {
-    const applications = await findApplicationsToFollowUp(formattedDate, db);
+    const applications = await findApplicationsToFollowUpByDate(formattedDate, db);
 
     if (applications.length === 0) {
       console.log("No se encontraron aplicaciones para seguir hoy.");
